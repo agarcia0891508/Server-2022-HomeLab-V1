@@ -25,3 +25,7 @@ Oraclebox VM 2 CPUs 4GBs Ram Windows 11 VM
 	- File Share
 - Windows 11
 - Oraclebox
+
+## Modules
+I separated each part of the project into specific modules for better organization of information. Each module details the steps taken to troubleshoot some issues that came up, document the process,
+and include any new information not originally known before taking on the project.
