@@ -1,0 +1,26 @@
+# Module 2
+
+Since we installed a new instance of the server, I changed the computer name to be something more manageable. 
+It is good practice to name your servers, we can do so by clicking on the server name and going to change name to ny-DC-01. 
+Usually, servers are named based on location and DC stands for domain controller. 
+
+Our domain controller is going to act as the central server that is able to manage user access, verify credentials, etc.
+An AD forest is the highest level of organization in AD. Each forest shares a single database, a single global address list and a security boundary. 
+By default, a user or administrator in one forest cannot access another forest. One single AD configuration can contain more than one domain, and the tier above the domain the AD forest. 
+
+By creating a new computer name, the VM is going to reboot for those changes to take effect and now I can go ahead and install Active Directory. 
+Using the Roles and Feature Wizard tool, I am able to select the server I created with the new name of NY-DC-01.techorg1.com
+The roles we are installing would AD Domain Services, DNS, and File and Storage Services. The features being installed are
+group policy management and other Features that are automatically installed.
+
+Once those features are installed, I clicked on promoting this server to a domain controller, and a installation wizard opens up
+and we are given three options to choose how we want to deploy AD. I clicked on the Add a new forest option.
+An AD forest is the highest level of organization in AD. Each forest shares a single database, a single global address list and a security boundary. 
+By default, a user or administrator in one forest cannot access another forest. 
+One single AD configuration can contain more than one domain, and the tier above the domain the AD forest. 
+
+In the Active Directory Domain Services Configuration Wizard, Domain NetBIOS Name is the short, legacy name used by older Windows systems and applications to identify the domain.
+ad.company.local = AD, contoso.com = CONTOSO
+When you promote a server to a domain controller and create a new domain, the wizard typically automatically suggests a NetBIOS name based on the first label of the domain name.
+In the adding roles and features wizard tool, we selected Active Directory Domain Services which added other tools by default. 
+When the process finished, we have to promote the server we created (not the VM) to a domain controller by adding a new forest or highest level of an org in AD. 
