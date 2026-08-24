@@ -1,0 +1,25 @@
+# Module 1
+
+Most homelabs start off with needing virtualization software and something like Oraclebox is perfect for a project like this. I chose Oraclebox because I've used it
+before in previous assignments for university courses at FIU. 
+
+https://www.virtualbox.org/
+
+From there, I downloaded the version of VirtualBox specific to my OS. Next, we need a installation disc of Windows 11. You can download a copy of Windows 11 directly from Microsoft,
+by navigating to this site and clicking on the Download Now below the Windows 11 Installation Media. If you just start up VirtualBox, nothing will start up because it acts 
+as a sandbox environment. You need to have some sort of OS loaded inside in order to create a VM.
+
+https://www.microsoft.com/en-us/software-download/windows11
+
+From here, we can boot VirtualBox and click on New. It will open a window asking for the VM Name and where it will be stored. I made sure to update the version of the OS to be Server 2022
+and we click on Finish. From there, we just want to adjust the proccessor settings like the amount of RAM, CPU core amount, etc. Since I'm not going to any actions that would be
+processor heavy, we can opt for a minimum amount of 2 cores and 4GB of RAM. This is adjusted through the Settings option in for the Server 2022 instance I just created.
+
+Once we start up the instance, an error screen will pop up stating the VM failed to boot. This is because nothing has been loaded inside yet, think of a CD player
+with no CD. We look for the ISO file downloaded earlier and we use that to mount to the VM. During the install, I clicked on the Standard Desktop Experience
+version of Server 2022 since this one comes with a GUI.
+
+
+I created a username and password since it prompts for this before going to the desktop and it was able to run as normal.
+I verified that I could use Server Manager, which is almost like a homepage for managing servers.
+
