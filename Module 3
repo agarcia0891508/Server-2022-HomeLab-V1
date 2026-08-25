@@ -1,0 +1,62 @@
+# Module 3
+## Installing Guest Addition, Account Creations, AD
+
+VirtualBox has a feature that allows you add a shared folder between the host and the VM. So I can upload any file from my 
+computer onto whatever VM I want have this enabled. 
+
+I was able to create a user in AD and I can update their info like contact information, address, etc. We can also reset their password, disable their account, unlocking their account, etc. 
+By using the CMD prompt, we can also display the information for the profile for each user. This is managed through the AD Users and Computers tool.
+I added a few users and only gave one of the uses administrative privlieges.
+
+In order to familiarize myself with the CMD line and limit the use of using a GUI, I executed this command user ericc /domain
+This displays information like the user's fullname, username, whether an account is active or not, last password set, and more.
+
+In the background, I also started up a new VM using the Windows Creation Media tool and was able to extract an ISO file with a Windows 11 image.
+I made the mistake of using an Outlook account to sign in when I saw that it was possible to be able to start up an instance of Windows 11
+without having to sign in online with a Outlook account.
+
+## Windows 11 VM Setup (No Internet)
+
+Name the VM whatever you want it to be. Best to use what version of Windows it is and then make sure that the VM folder is saved on a blank or unused storage drive like what I have set up here at home. Don’t select an ISO and choose finish.
+Next select the newly created VM and click on start. From there, it will give you an error and ask you to mount a ISO or disk to start up the machine. 
+From here once its loaded, just press any key to install from CD is what it will say on the screen,
+Go through with installation and click on Windows 11 Pro and click yes to everything.
+Once the boot begins, and goes to the blue screen with the percentage, make sure to change the network settings of the VM to be only Host Adapter. This will let us continue with the setup and bypass signing in to Windows. 
+
+Once we get to to the actual Windows setup, hit Shift + F10 to open up the command prompt and type in regedit
+
+Navigate to this directory in the Registry Editor.
+HKLM\Software\Microsoft\Windows\CurrentVersion\OOBE
+Create a new DWORD (32-bit) value named "BypassNRO" and set the value to 1.
+Close the registry editor.
+
+At the command prompt, run this command:
+ipconfig /release
+
+Continue with installation.
+
+On the screen entitled "Let's connect you to a network" select "I don't have internet". Continue with installation to completion. 
+If it asks for a password, you can just hit enter.
+
+What did I exactly do when I opened up regedit and bypassed this account creation setup when booting up Win 11? Windows Registry is made up of keys and values. 
+There are keys and subkeys and on the righthand side is where those values are set. On the left handside, we see the naming convention of HKEY_EXAMPLE. 
+These are predefined root keys that sit at the top level of this directory. HKEY stands for handle to registry key.
+
+## TLDR For Registry Editor
+The location for the registry files can be found in C:\Windows\System32\config and this is where all the files for all the different registry keys are located except the one for the current user, which is located in the user profile directory. 
+HKCR has to do with with info about registered applications. It has file associations like which programs open which files, object linking with class IDs and which applications handle certain actions. 
+The defaalt settings for this are in HKLM\SOFTWARE\classes and the user settings that are changed would be in HKCU\Software\Classes key. HKCR will combine these two locations, one for the default and one for the user and combines them into one that the rest of the system will reference. 
+Makes it so that the user setting will override the default so that is the one that gets used. HKLM contains information and settings related to the local computer. This would be system memory, installed hardware and software configuration data, devices and drivers, and startup control parameters. 
+In the system32\Config folder, a lot of the files correspond with the subkeys of the HKLM. HKCG is linked to the Software and System sub key within HKLM and acts as an alias. HKU will separate each user as a sub key. HKCU contains information about the current logged in user and acts an alias for the sub key of that user in HKU. 
+
+
+
+
+
+
+
+
+
+
+
+
