@@ -1,0 +1,46 @@
+# Module 4 
+
+## AD Users and Computers, Group Policy, Locked Accounts, Password Policy, Endpoint Manager
+
+The whoami /fqdn command displays the Fully Qualified Domain Name (FQDN) or Distinguished Name (DN) of the currently logged-on user.  This command is primarily useful for domain-joined users, as it returns the full LDAP path (e.g., CN=John Doe,OU=Users,DC=example,DC=com)
+I clicked on properties within File Explorer, System Properties after clicking on the PC, and then I joined the machine to the domain. We would use the credentials as the admin in our Server VM and any changes to the Win 11 VM in the future would require those elevated credentials. 
+I can prove that the computer is on the domain by looking at AD Users and Computers and seeing the Desktop01 on there.
+
+Also since I joined this computer to the domain, we can have the other users we created join with the credentials we set up for them as well.
+We will replicate some common IT issues, so lets say that we have a user who is leaving the company. In this case, we have the user marcg. In some cases, sometimes the credentials will stay cached meaning that the user might be still be able to login even though his account is already disabled. 
+We logged in with the Administrator account, the one also in Server 2022, and disabled his account. But, in the Windows 11 VM, we are still able to login as marcg. I logged in as Administrator and then deleted his user profile in System Properties. 
+Lets say in our company, that we hire consultants for a certain date/range to have access to our system. In order to edit an existing policy, we go to Tools in Server 2022, click on Group Policy Management Editor, click on the existing policy like Default Domain Policy and we can right click and hit edit. 
+If we want to edit the password policy like how long it stays active before a user has to change, I can navigate to the Default Domain Controllers Policy. From this page, you can edit password minimum requirements, account lockout attempts, password history, etc. 
+
+Once the policy settings are defined, we can go back to the console and click on enforce. 
+We can see more details about the policy settings we configured in the Settings tab in the console.
+
+## Endpoint Manager
+All IT environments must have the ability to manage multiple endpoints in order to update software, remote inside computers, maintain security posture, etc.
+Created an Action1 account and moved the installer from our host to Server 2022 VM through the file share we created. 
+Action1 is a endpoint manager, similar to Ninja1. We deployed an agent to the Server 2022 VM and we are able to see the device. 
+Like Ninja1, we can remote into the device, apply scripts, and run updates on connected machines. 
+
+Most companies have Shares, in which a folder can be designated to certain users within a company.
+Granting someone access to share folders. Navigate to Shares in Server 2022, right click on the empty space in share. 
+We use SMB Share Quick, with SMB standing for Server Message Block, a communication protocol specifically used for Windows systems.
+We select the volume we have available, and the AD server that we have.
+
+On this page, we want to change the permissions of who has access to this share folder, typically in an IT environment, we don’t want to give everyone access to a share folder. 
+Similar to my current place of employment, we can create parent folders and then build off with sub folders that are delegated by specific team and what a position a user might be. 
+For example, a marketing director would have full read write access to a Marketing folder, with subordinates only having read access to documents within certain sub folders.
+
+## Group Policy
+How to create a basic GPO to apply to all users. Open up Group Policy Management console and in the sub folder titled GPO, we can create a new policy there. 
+It won’t activate until its linked to an Object Unit, domain, or site. For this specific project, I just want to create a GPO to use a wallpaper for all users and not have them change it, regardless of whether they are a user or Admin. 
+I named it Desktop Wallpaper or default corporate wallpaper. From here we can right click on the new GPO and click on edit. 
+From here, we navigate to User Configuration > Administrative Templates > Desktop, and we can see all the options available to change. 
+We have to make sure that the Shared drive is accessible to all users and that the file itself is something that users can read and execute. 
+We can verify this by changing the properties of the image and making sure that Users can have the permissions to at least open the file on their own profile.
+
+Since we don’t have an OU created in order to link this new GPO, we can apply it to the entire domain instead. 
+Once it’s linked, we have to make sure that it applies to Users, so we can that through Security Filtering. 
+Here we can see that the GPO is linked to techorg1.com since it’s right under that domain and if we want can do this command gpudate /force on the Windows 11 VM, sign out of the user and restart it. 
+
+
+
