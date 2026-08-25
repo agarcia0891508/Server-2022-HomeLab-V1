@@ -1,0 +1,96 @@
+# Module 3.5
+
+## DNS, joining a machine to the domain
+
+## DNS TLDR
+
+### How DNS resolves PC1.microsoft.com
+
+Imagine we have a computer called PC1 that belongs to the microsoft.com domain. Its fully qualified domain name (FQDN) is:
+PC1.microsoft.com
+You may notice that a fully qualified domain name can also be written with a dot at the end:
+PC1.microsoft.com.
+
+That final dot represents the root of the DNS hierarchy. It tells us that we are starting at the very top of the DNS naming system.
+When you type PC1.microsoft.com into an application, the final dot is normally omitted because it is understood implicitly. In other words:
+
+PC1.microsoft.com = PC1.microsoft.com.
+
+Now let's say our computer needs to find the IP address of PC1.microsoft.com. The computer sends a DNS query to its configured DNS resolver. For example, the DNS server might have the IP address 172.16.0.10.
+The DNS resolver then works its way through the DNS hierarchy to find the answer.
+
+1. Start at the root
+The resolver begins at the root DNS servers. The root servers do not know the IP address of PC1.microsoft.com, and they do not contain all the individual DNS records for every domain.
+However, the root servers do know which DNS servers are responsible for the .com top-level domain (TLD).
+So the root server essentially responds:
+“I don't know where microsoft.com is, but here are the DNS servers responsible for .com.” 
+
+2. Ask the .com DNS servers
+The resolver then contacts a .com DNS server and asks:
+“Where can I find the DNS servers responsible for microsoft.com?”
+The .com server does not normally provide the IP address of PC1.microsoft.com either. Instead, it knows which authoritative DNS servers are responsible for the microsoft.com domain.
+It responds with information directing the resolver to Microsoft's authoritative DNS servers.
+
+3. Ask Microsoft's authoritative DNS server
+The resolver then contacts one of the authoritative DNS servers for microsoft.com and asks:
+“What is the IP address for PC1.microsoft.com?”
+ The authoritative DNS server has the DNS record for PC1 and can provide the requested IP address.
+For example, it might respond: PC1.microsoft.com → 172.16.0.10
+
+4. Return the answer
+The DNS resolver receives the answer and sends it back to the computer that originally requested it.
+The computer can now use the IP address 172.16.0.10 to communicate with PC1.
+
+### The hierarchy
+
+The process can be visualized like this:
+
+Root (.)
+↓
+.com
+↓
+microsoft.com
+↓
+PC1.microsoft.com
+↓
+172.16.0.10
+
+So DNS works much like a hierarchy or directory system. Each level helps the resolver find the next level until it reaches the authoritative DNS server that has the actual record for the requested hostname.
+One important distinction is that 172.16.0.10 in this example is the IP address of PC1, while the DNS server/resolver that performs the lookup could have a completely different IP address. 
+If the says the DNS server is 172.16.0.10, then that address would be the DNS server's address rather than PC1's address, so those two roles should not be confused.
+If you haven’t installed DNS, we can do with by going to tools and adding the roles and Features installation. Since we already installed AD on our server, DNS was also installed as well.
+
+I want to join the recently created VM to my new domain.
+I created a domain controller which is the techorg1.com 
+I updated the network settings to be host only for both the server VM and Windows 11 VM. I also updated the IPV4 settings with a specific IP address I pinged the server I have set up for the domain. AD is dependent on DNS. 
+When a computer joins a domain, it doesn’t connect to the domain controller by IP address. It needs to find the domain controller through DNS records that Active Directory registers. 
+So breaking it down, Server 2022 has a static IP of 10.1.10.2 , I used a static IP since if we don’t, the DC’s IP would be changing all of the time since connected clients would be looking for services at the wrong location. 
+When AD Domain Services was installed, it also installed DNS in the backend using the same assigned static IP that you had. The static IP for the DC is 10.1.10.2 and the client IP is 10.1.10.3 
+When you join a domain, Windows will do a DNS lookup asking where is the domain controller for techorg1.com, the client queries DNS for AD service records and since the DNS is set to 10.1.10.2, the client asks the domain controller directly. 
+The DC will identify itself and the client can locate the DC, authenticate, create a computer account, and join the domain. We used host only networking to keep the VM’s isolated from our physical home network and they can communicate directly. 
+255.0.0.0 is okay to use but creates a very large network of IP addresses to use, but typically we want to use a subnet mask of 255.255.255.0 to create a more manageable network.
+
+Domain joining works because:
+
+1. Both VMs are on the same Host-Only network.
+2. The Domain Controller has a fixed IP address (10.1.10.2).
+3. The Domain Controller is running DNS.
+4. The Windows 11 VM uses the Domain Controller as its preferred DNS server.
+5. DNS allows the client to discover Active Directory services (LDAP, Kerberos, Global Catalog).
+6. Once discovered, Windows creates a computer account in Active Directory and joins the domain.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
